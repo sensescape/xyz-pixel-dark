@@ -230,6 +230,17 @@ layers:
                     polygons:
                         visible: true
 
+        university:
+            filter:
+                all:
+                    - kind: [university, college]
+                    - $zoom: { min: 14 }
+            draw:
+                polygons:
+                    style: university-stripes
+                    color: [0.900,0.900,0.900]
+                    visible: true
+
     # roads:
     #     data: { source: mapzen, layer: roads }
     #     draw:
@@ -271,47 +282,33 @@ layers:
     #             lines:
     #                 cap: round
     #                 join: round
-    #                 color: [1.000,1.000,1.000]
+    #                 color: [0.280,0.280,0.280]
     #                 width: 1px
     #         major_road:
     #             filter: { kind: major_road }
     #             draw:
     #                 lines:
-    #                     color: [1.000,1.000,1.000]
-    #                     width: 1px
-    #         minor_road:
-    #             filter: { kind: minor_road }
-    #             draw:
-    #                 lines:
-    #                     color: [1.000,1.000,1.000]
-    #                     width: 1px
-    #         ferry:
-    #             filter: { kind: ferry }
-    #             draw:
-    #                 lines:
-    #                     color: [0.890,0.890,0.890]
-    #                     width: 1px
+    #                     color: [0.280,0.280,0.280]
+    #                     width: 0.5px
 
     #     highway:
     #         filter: { kind: highway, $zoom: { min: 8 } }
     #         draw:
     #             lines:
-    #                 color: [1.000,1.000,1.000]
-    #                 width: [[5, 2px], [12, 4px]]
-    #                 # outline:
-    #                 #     color: [0.900,0.900,0.900]
-    #                 #     width: [[5, 0.5px], [8, 0.5px], [12, 1px]]
+    #                 color: [[5,[0.280,0.280,0.280]], [12,[0.280,0.280,0.280]]]
+    #                 width: [[5, 0px], [8, 0.1px], [12, 0.1px], [14, 2px], [16, 6.5px], [17, 22m]]
+    #                 outline:
+    #                     color: [[5,[0.280,0.280,0.280]], [14,[0.280,0.280,0.280]], [16,[0.280,0.280,0.280]]]
+    #                     width: [[5, 0px], [12, 0.5px], [14, 1px]]
 
     #         link:
     #             filter: { is_link: true } # on- and off-ramps, etc
     #             draw:
     #                 lines:
-    #                     color: [1.000,1.000,1.000]
-    #                     width: [[5, 1px], [12, 2px]]
-    #                     cap: butt
-    #                     # outline:
-    #                     #     color: [0.900,0.900,0.900]
-    #                     #     width: [[5, 0.5px], [12, 1px]]
+    #                     color: [0.280,0.280,0.280]
+    #                     width: [[8, 0px], [13, 0px], [18, 2px]]
+    #                     outline:
+    #                         width: 0px
     #             early_link:
     #                 filter: { $zoom: { max: 15 } }
     #                 draw:
@@ -322,17 +319,17 @@ layers:
     #                 filter: {is_tunnel: true, $zoom: {min: 13} }
     #                 draw:
     #                     lines:
-    #                         color: [1.000,1.000,1.000]
-    #                         # outline:
-    #                         #     color: [0.900,0.900,0.900]
+    #                         color: [0.280,0.280,0.280]
+    #                         outline:
+    #                             color: [0.280,0.280,0.280]
 
     #         tunnel:
     #             filter: {is_tunnel: true, $zoom: {min: 13} }
     #             draw:
     #                 lines:
-    #                     color: [1.000,1.000,1.000]
-    #                     # outline:
-    #                     #     color: [0.900,0.900,0.900]
+    #                     color: [0.280,0.280,0.280]
+    #                     outline:
+    #                         color: [0.280,0.280,0.280]
 
     #         highway_bridge:
     #             filter: {is_bridge: true}
@@ -342,6 +339,20 @@ layers:
     #                     outline:
     #                         cap: butt
 
+        # major_road:
+        #     filter: { kind: major_road, $zoom: { min: 13 } }
+        #     draw:
+        #         lines:
+        #             color: [0.460,0.460,0.460]
+        #             width: [[13,0px], [18,2px]]
+
+        # minor_road:
+        #     filter: { kind: minor_road, not: { kind_detail: service }, $zoom: { min: 16 } }
+        #     draw:
+        #         lines:
+        #             color: [0.460,0.460,0.460]
+        #             width: [[16,0px], [18,2px]]
+
     buildings:
         data: { source: mapzen, layer: buildings }
         filter:
@@ -350,7 +361,7 @@ layers:
             polygons:
                 visible: false
                 order: 329
-                color: [0.300,0.295,0.293]
+                color: [0.240,0.232,0.228]
 
         footprints:
             filter:
@@ -393,7 +404,7 @@ styles:
         shaders:
             defines:
                 PIXELATE_SCALE: 25.
-                PIXELATE_COLOR: color.rgb*.28
+                PIXELATE_COLOR: color.rgb*.22
                 PIXELATE_BACKGROUND_COLOR: color.rgb
 
     parks-pixelate:
@@ -412,11 +423,24 @@ styles:
             defines:
                 STRIPES_SCALE: 30
                 STRIPES_WIDTH: 0.75
-                STRIPES_ALPHA: 0.12
+                STRIPES_ALPHA: 0.52
                 STRIPES_ANGLE: 3.14159265
             blocks:
                 filter: |
-                    color.rgb = mix(vec3(0.082,0.098,0.100), vec3(0.082,0.098,0.100), gl_FragCoord.x / u_resolution.x);
+                    color.rgb = mix(vec3(0.082,0.090,0.090), vec3(0.092,0.116,0.120), gl_FragCoord.x / u_resolution.x);
+
+    university-stripes:
+        base: polygons
+        mix: [polygons-stripes]
+        shaders:
+            defines:
+                STRIPES_SCALE: 10
+                STRIPES_WIDTH: 0.75
+                STRIPES_ALPHA: 0.25
+                STRIPES_ANGLE: 3.14159265
+            blocks:
+                filter: |
+                    color.rgb = mix(vec3(0.140,0.135,0.133), vec3(0.092,0.116,0.120), gl_FragCoord.x / u_resolution.x);
 
     polygons-pixelate:
         ui:

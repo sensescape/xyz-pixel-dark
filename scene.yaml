@@ -1,0 +1,743 @@
+# Author: Geraldine Sarmiento
+
+# Tangram Blocks
+# https://tangrams.github.io/blocks/
+# Patricio Gonzalez Vivo
+
+cameras:
+    camera1:
+        type: perspective
+
+global:
+    # default order for basemap features
+    feature_order: function() { return feature.sort_rank; }
+    feature_order_down_1: function() { return feature.sort_rank - 1; }
+    building_extrude_height: |
+        function () { return feature.height > 16 || $zoom >= 16; }
+
+    # Sign up for a Mapzen API key to enjoy higher rate limits
+    # https://mapzen.com/documentation/overview/#developer-accounts-and-api-keys
+    sdk_api_key: '3eqm2_bfTNGZ85ar20fVyA'     # set this value to your Mapzen API key
+
+
+scene:
+    background:
+        color: [0.000,0.000,0.000]
+
+sources:
+    # mapzen:
+    #     type: MVT
+    #     # url:  https://tile.nextzen.org/tilezen/vector/v1/512/all/{z}/{x}/{y}.mvt
+    #     url: https://xyz.api.here.com/tiles/osmbase/512/all/{z}/{x}/{y}.mvt
+    #     url_params:
+    #         api_key: JJiaZE63TZObzPrmx0TQkw
+    #     tile_size: 512
+    #     max_zoom: 16
+
+    mapzen:
+        type: MVT
+        url: https://tile.nextzen.org/tilezen/vector/v1/512/all/{z}/{x}/{y}.mvt
+        url_params:
+            api_key: global.sdk_api_key
+        rasters: [normals-elevation]
+        tile_size: 512
+        max_zoom: 16
+    normals-elevation:
+        type: Raster
+        url: https://tile.nextzen.org/tilezen/terrain/v1/512/normal/{z}/{x}/{y}.png
+        url_params:
+            api_key: global.sdk_api_key
+        tile_size: 512
+        max_zoom: 15
+
+    xyz-osm:
+        type: MVT
+        url: https://xyz.api.here.com/tiles/osmbase/256/all/{z}/{x}/{y}.mvt
+
+layers:
+    earth:
+        data: { source: mapzen, layer: earth }
+        draw:
+            polygons:
+                style: earth-pixelate
+                order: global.feature_order
+                color: [0.100,0.100,0.100]
+
+    # water:
+    #     data: { source: mapzen, layer: water }
+    #     draw:
+    #         polygons:
+    #             style: water-stripes
+    #             order: global.feature_order
+    #             color: [1.000,0.000,0.000]
+
+    #     lakes:
+    #         filter:
+    #             all:
+    #                 - kind: [ocean, lake, water, riverbank, reservoir, swimming_pool]
+    #             any:
+    #                 # limit show smaller landuse areas to higher zooms
+    #                 - { $zoom: [1],  area: { min: 10000000000 } }
+    #                 - { $zoom: [2],  area: { min: 7000000000 } }
+    #                 # some weird natural earth scale set transition
+    #                 - { $zoom: [3],  area: { min: 5000000000 } }
+    #                 - { $zoom: [4],  area: { min: 300000000 } }
+    #                 - { $zoom: [5],  area: { min: 50000000 } }
+    #                 - { $zoom: [6],  area: { min: 50000000 } }
+    #                 - { $zoom: [7],  area: { min: 50000000 } }
+    #                 - { $zoom: [8],  area: { min: 50000000 } }
+    #                 - { $zoom: [9],  area: { min: 15000000 } }
+    #                 - { $zoom: [10], area: { min: 4000000 } }
+    #                 - { $zoom: [11], area: { min: 1000000 } }
+    #                 - { $zoom: [12], area: { min: 250000 } }
+    #                 - { $zoom: [13], area: { min: 150000 } }
+    #                 - { $zoom: [14], area: { min: 40000 } }
+    #                 - { $zoom: { min: 15 } }
+    #         draw:
+    #             polygons:
+    #                 color: [1.000,0.000,0.000]
+
+    #     other-water-areas:
+    #         filter: { not: { kind: [ocean, lake, water, reservoir] }, $zoom: { min: 11 }, area: { min: 100 } }
+    #         draw:
+    #             polygons:
+    #                 color: [1.000,0.000,0.000]
+
+    water:
+        data: { source: mapzen, layer: water }
+        draw:
+            polygons:
+                style: water-pixelate
+                order: global.feature_order
+                color: [0.266,0.274,0.300]
+
+        lakes:
+            filter:
+                all:
+                    - kind: [ocean, lake, water, riverbank, reservoir, swimming_pool]
+                any:
+                    # limit show smaller landuse areas to higher zooms
+                    - { $zoom: [1],  area: { min: 10000000000 } }
+                    - { $zoom: [2],  area: { min: 7000000000 } }
+                    # some weird natural earth scale set transition
+                    - { $zoom: [3],  area: { min: 5000000000 } }
+                    - { $zoom: [4],  area: { min: 300000000 } }
+                    - { $zoom: [5],  area: { min: 50000000 } }
+                    - { $zoom: [6],  area: { min: 50000000 } }
+                    - { $zoom: [7],  area: { min: 50000000 } }
+                    - { $zoom: [8],  area: { min: 50000000 } }
+                    - { $zoom: [9],  area: { min: 15000000 } }
+                    - { $zoom: [10], area: { min: 4000000 } }
+                    - { $zoom: [11], area: { min: 1000000 } }
+                    - { $zoom: [12], area: { min: 250000 } }
+                    - { $zoom: [13], area: { min: 150000 } }
+                    - { $zoom: [14], area: { min: 40000 } }
+                    - { $zoom: { min: 15 } }
+            draw:
+                polygons:
+                    color: [0.266,0.274,0.300]
+
+        other-water-areas:
+            filter: { not: { kind: [ocean, lake, water, reservoir] }, $zoom: { min: 11 }, area: { min: 100 } }
+            draw:
+                polygons:
+                    color: [0.266,0.274,0.300]
+
+    landuse:
+        data: { source: mapzen }
+        draw:
+            polygons:
+                order: global.feature_order
+                visible: false
+        # tier1:
+        national_park:
+            filter:
+                all:
+                    - kind: [national_park, battlefield, protected_area]
+                any:
+                    - not: { operator: [ "United States Forest Service" ] }
+                    - protect_class: ['2','3','5']
+            draw:
+                polygons:
+                    style: parks-pixelate
+                    color: [0.031,0.150,0.138]
+                    visible: true
+            us_national_park:
+                # yosemite national park, death valley national park, grand canyon national park
+                filter:
+                    any:
+                        - operator: [ "United States National Park Service" ]
+                        - protect_class: ['2','3','5']
+                draw:
+                    polygons:
+                        style: parks-pixelate
+                        color: [0.031,0.150,0.138]
+                        visible: true
+
+        conservation:
+            filter:
+                $zoom: { min: 4 }
+                kind: [protected_area, nature_reserve, national_park]
+                not: { protect_class: ['2','3','5']}
+            draw:
+                polygons:
+                    style: parks-pixelate
+                    color: [0.128,0.150,0.150]
+                    visible: true
+
+        national_forest_level_6:
+            filter:
+                all:
+                    - kind: forest
+                any:
+                    - protect_class: ['6']
+                    - operator: ['United States Forest Service']
+            draw:
+                polygons:
+                    style: parks-pixelate
+                    color: [0.031,0.134,0.150]
+                    visible: true
+        
+        forest-landcover:
+            filter: { kind: [forest, natural_forest, wood, natural_wood, natural_park], $zoom: { min: 10 }, not: { operator: "United States Forest Service" } }
+            draw:
+                polygons:
+                    style: parks-stripes
+                    color: [1.000,0.000,0.000]
+                    visible: true
+
+    # roads:
+    #     data: { source: mapzen, layer: roads }
+    #     draw:
+    #         lines:
+    #             #color: black
+    #             width: 1px
+    #             order: global.feature_order
+    #             # but give them all the same outline
+    #             outline:
+    #                 order: 352
+
+    #     early:
+    #         filter: { $zoom: { max: 15 } }
+    #         draw:
+    #             lines:
+    #                 outline:
+    #                     order: global.feature_order
+
+    #     bridges-tunnels:
+    #         filter: { any: [is_bridge: true, is_tunnel: true] }
+    #         draw:
+    #             lines:
+    #                 # cap: butt
+    #                 outline:
+    #                     # except bridges and tunnels, their outlines should also self-sort
+    #                     order: global.feature_order
+
+    #     # default outlines starting at zoom 16
+    #     default-outline-width:
+    #         filter: { $zoom: { min: 16 } }
+    #         draw:
+    #             lines:
+    #                 outline:
+    #                     width: function () { return 3/16 * Math.log($zoom); }
+
+    #     natural_earth_highways:
+    #         filter: { $zoom: { min: 5, max: 8 } }
+    #         draw:
+    #             lines:
+    #                 cap: round
+    #                 join: round
+    #                 color: [1.000,1.000,1.000]
+    #                 width: 1px
+    #         major_road:
+    #             filter: { kind: major_road }
+    #             draw:
+    #                 lines:
+    #                     color: [1.000,1.000,1.000]
+    #                     width: 1px
+    #         minor_road:
+    #             filter: { kind: minor_road }
+    #             draw:
+    #                 lines:
+    #                     color: [1.000,1.000,1.000]
+    #                     width: 1px
+    #         ferry:
+    #             filter: { kind: ferry }
+    #             draw:
+    #                 lines:
+    #                     color: [0.890,0.890,0.890]
+    #                     width: 1px
+
+    #     highway:
+    #         filter: { kind: highway, $zoom: { min: 8 } }
+    #         draw:
+    #             lines:
+    #                 color: [1.000,1.000,1.000]
+    #                 width: [[5, 2px], [12, 4px]]
+    #                 # outline:
+    #                 #     color: [0.900,0.900,0.900]
+    #                 #     width: [[5, 0.5px], [8, 0.5px], [12, 1px]]
+
+    #         link:
+    #             filter: { is_link: true } # on- and off-ramps, etc
+    #             draw:
+    #                 lines:
+    #                     color: [1.000,1.000,1.000]
+    #                     width: [[5, 1px], [12, 2px]]
+    #                     cap: butt
+    #                     # outline:
+    #                     #     color: [0.900,0.900,0.900]
+    #                     #     width: [[5, 0.5px], [12, 1px]]
+    #             early_link:
+    #                 filter: { $zoom: { max: 15 } }
+    #                 draw:
+    #                     lines:
+    #                         # except bridges and tunnels, their outlines should also self-sort
+    #                         order: 352
+    #             tunnel-link:
+    #                 filter: {is_tunnel: true, $zoom: {min: 13} }
+    #                 draw:
+    #                     lines:
+    #                         color: [1.000,1.000,1.000]
+    #                         # outline:
+    #                         #     color: [0.900,0.900,0.900]
+
+    #         tunnel:
+    #             filter: {is_tunnel: true, $zoom: {min: 13} }
+    #             draw:
+    #                 lines:
+    #                     color: [1.000,1.000,1.000]
+    #                     # outline:
+    #                     #     color: [0.900,0.900,0.900]
+
+    #         highway_bridge:
+    #             filter: {is_bridge: true}
+    #             draw:
+    #                 lines:
+    #                     cap: round
+    #                     outline:
+    #                         cap: butt
+
+    buildings:
+        data: { source: mapzen, layer: buildings }
+        filter:
+            not: { location: underground }
+        draw:
+            polygons:
+                visible: false
+                order: 329
+                color: [0.300,0.295,0.293]
+
+        footprints:
+            filter:
+                any:
+                    - { $zoom: [13], scale_rank: [1,2] }
+                    - { $zoom: [14], scale_rank: [1,2,3] }
+                    - { $zoom: [15], height: { min: 100 } }
+                    - { $zoom: [15], area: { min: 700 } }
+                    - { $zoom: [15], volume: { min: 100000 } }
+                    - { $zoom: [16], area: { min: 100 } }
+                    - { $zoom: [16], volume: { min: 50000 } }
+                    - { $zoom: { min: 17 }, area: true }
+            draw:
+                polygons:
+                    visible: true
+                    style: buildings-pixelate
+
+styles:
+    earth-pixelate:
+        base: polygons
+        mix: [polygons-pixelate]
+        shaders:
+            defines:
+                PIXELATE_SCALE: 40.
+                PIXELATE_COLOR: color.rgb*.12
+                PIXELATE_BACKGROUND_COLOR: color.rgb
+
+    water-pixelate:
+        base: polygons
+        mix: [polygons-pixelate]
+        shaders:
+            defines:
+                PIXELATE_SCALE: 5.
+                PIXELATE_COLOR: color.rgb*.295
+                PIXELATE_BACKGROUND_COLOR: color.rgb
+
+    buildings-pixelate:
+        base: polygons
+        mix: [polygons-pixelate]
+        shaders:
+            defines:
+                PIXELATE_SCALE: 25.
+                PIXELATE_COLOR: color.rgb*.28
+                PIXELATE_BACKGROUND_COLOR: color.rgb
+
+    parks-pixelate:
+        base: polygons
+        mix: [polygons-pixelate]
+        shaders:
+            defines:
+                PIXELATE_SCALE: 40.
+                PIXELATE_COLOR: color.rgb*.17
+                PIXELATE_BACKGROUND_COLOR: color.rgb
+
+    parks-stripes:
+        base: polygons
+        mix: [polygons-stripes]
+        shaders:
+            defines:
+                STRIPES_SCALE: 30
+                STRIPES_WIDTH: 0.75
+                STRIPES_ALPHA: 0.12
+                STRIPES_ANGLE: 3.14159265
+            blocks:
+                filter: |
+                    color.rgb = mix(vec3(0.082,0.098,0.100), vec3(0.082,0.098,0.100), gl_FragCoord.x / u_resolution.x);
+
+    polygons-pixelate:
+        ui:
+            shaders:
+                defines:
+                    PIXELATE_SCALE:
+                        type: number
+                        label: Scale
+                        range:
+                            min: 1.
+                            max: 1000.
+                            step: 1.
+                    PIXELATE_COLOR:
+                        type: color
+                        label: Color
+                    PIXELATE_BACKGROUND_COLOR:
+                        type: color
+                        label: 'Background color'
+
+        base: polygons
+        mix: [space-tile, generative-random]
+        shaders:
+            defines:
+                PIXELATE_SCALE: 60.
+                PIXELATE_COLOR: color.rgb*.85
+                PIXELATE_BACKGROUND_COLOR: color.rgb
+            blocks:
+                color: |
+                    color.rgb = mix(PIXELATE_BACKGROUND_COLOR,
+                                    PIXELATE_COLOR,
+                                    random(floor(getTileCoords()*PIXELATE_SCALE)));
+
+    generative-random:
+        test:
+            random_float: { blocks: { color: "    color.rgb += random(v_texcoord.x*2.);" } }
+            random_vec2: { blocks: { color: "    color.rgb += random(v_texcoord.xy*2.);" } }
+            random_vec3: { blocks: { color: "    color.rgb += random(vec3(v_texcoord.xy*2.,u_time));" } }
+            random2_vec2: { blocks: { color: "    color.rg += random2(v_texcoord.xy*2.);" } }
+            random3_vec2: { blocks: { color: "    color.rgb += random3(v_texcoord.xy*2.);" } }
+            random3_vec3: { blocks: { color: "    color.rgb += random3(vec3(v_texcoord.xy*2.,u_time));" } }
+            random_float_t: { defines: { RANDOM_TEXSAMPLE: 1 }, blocks: { color: "    color.rgb += random(v_texcoord.x*2.);" } }
+            random_vec2_t: { defines: { RANDOM_TEXSAMPLE: 1 }, blocks: { color: "    color.rgb += random(v_texcoord.xy*2.);" } }
+            random_vec3_t: { defines: { RANDOM_TEXSAMPLE: 1 }, blocks: { color: "    color.rgb += random(vec3(v_texcoord.xy*2.,u_time));" } }
+            random2_vec2_t: { defines: { RANDOM_TEXSAMPLE: 1 }, blocks: { color: "    color.rg += random2(v_texcoord.xy*2.);" } }
+            random3_vec2_t: { defines: { RANDOM_TEXSAMPLE: 1 }, blocks: { color: "    color.rgb += random3(v_texcoord.xy*2.);" } }
+            random3_vec3_t: { defines: { RANDOM_TEXSAMPLE: 1 }, blocks: { color: "    color.rgb += random3(vec3(v_texcoord.xy*2.,u_time));" } }
+
+        shaders:
+            uniforms:
+                u_random: https://tangrams.github.io/blocks/generative/imgs/tex16.png
+            blocks:
+                global: |
+                    vec3 random3 (vec2 p) {
+                        #ifdef RANDOM_TEXSAMPLE
+                        return texture2D(u_random,fract(p*2.),-100.).rgb;
+                        #else
+                        return fract(sin(vec3( dot(p,vec2(127.1,311.7)), dot(p,vec2(269.5,183.3)), dot(p,vec2(419.2,371.9)) ))*43758.5453);
+                        #endif
+                    }
+                    vec3 random3 (vec3 p) {
+                        #ifdef RANDOM_TEXSAMPLE
+                        vec2 uv = fract(p.xy+vec2(37.0,17.0)*p.z);
+                        return texture2D(u_random, fract(uv*2.), -100.0).rgb;
+                        #else
+                        float j = 4096.0*sin(dot(p,vec3(17.0, 59.4, 15.0)));
+                        vec3 r;
+                        r.z = fract(512.0*j);
+                        j *= .125;
+                        r.x = fract(512.0*j);
+                        j *= .125;
+                        r.y = fract(512.0*j);
+                        return r-0.5;
+                        #endif
+                    }
+                    vec2 random2 (vec2 p) {
+                        #ifdef RANDOM_TEXSAMPLE
+                        return random3(p).rg;
+                        #else
+                        return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*43758.5453);
+                        #endif
+                    }
+                    float random (float x) {
+                        return fract(sin(x)*43758.5453);
+                    }
+                    float random (vec2 p) {
+                        #ifdef RANDOM_TEXSAMPLE
+                        return random3(p).r;
+                        #else
+                        return fract(1e4 * sin(17.0 * p.x + p.y * 0.1) * (0.1 + abs(sin(p.y * 13.0 + p.x))));
+                        #endif
+                    }
+                    float random (vec3 p) {
+                        #ifdef RANDOM_TEXSAMPLE
+                        return random3(p).r;
+                        #else
+                        return fract(sin(dot(p.xyz, vec3(70.9898,78.233,32.4355)))* 43758.5453123);
+                        #endif
+                    }
+
+    polygons_transparent:
+        base: polygons
+        blend: overlay
+
+    polygons-stripes:
+        ui:
+            shaders:
+                defines:
+                    STRIPES_SCALE:
+                        type: number
+                        label: Scale
+                        range:
+                            min: 1.
+                            max: 1000.
+                            step: 1.
+                    STRIPES_WIDTH:
+                        type: number
+                        label: Width
+                        range:
+                            min: 0.
+                            max: 1.
+                            step: 0.01
+                    STRIPES_ALPHA:
+                        type: number
+                        label: Amount
+                        range:
+                            min: 0.
+                            max: 1.
+                            step: 0.01
+                    STRIPES_ANGLE:
+                        type: number
+                        label: Angle (radiants)
+                        range:
+                            min: 0.
+                            max: 3.1415
+                            step: 0.1
+        base: polygons
+        mix: [patterns-stripes, space-tile]
+        shaders:
+            defines:
+                STRIPES_WIDTH: .5
+                STRIPES_ALPHA: 1.0
+                STRIPES_SCALE: 2.
+                STRIPES_ANGLE: PI*0.25
+            blocks:
+                color: |
+                    color.a = stripes(  getTileCoords()*STRIPES_SCALE,
+                                        STRIPES_WIDTH,
+                                        STRIPES_ANGLE)*STRIPES_ALPHA;
+
+    patterns-stripes:
+        mix: [functions-aastep, geometry-matrices]
+        shaders:
+            defines:
+                PI: 3.14159265358979323846
+            blocks:
+                global: |
+                    // Return a distance function of stripes
+                    float stripesDF (vec2 st) {
+                        return abs(sin(st.y*PI));
+                    }
+
+                    // Adjustable width stripes
+                    float stripes (vec2 st, float width) {
+                        return aastep(width, stripesDF(st));
+                    }
+
+                    // Adjustable Angle
+                    float stripes (vec2 st, float width, float angle) {
+                        st = rotate2D(angle) * st;
+                        return stripes(st, width);
+                    }
+
+                    // Faster optimisation of diagonal stripes
+                    float diagonalStripes (vec2 st) {
+                        vec2 i_st = floor(st);
+                        vec2 f_st = fract(st);
+                        if (mod(i_st.y,2.) - mod(i_st.x,2.) == 0.) {
+                            return 1.0 - aastep(f_st.x,f_st.y);
+                        } else {
+                            return aastep(f_st.x,f_st.y);
+                        }
+                    }
+
+                    // Faster optimisation of diagonal stripes with controlable width
+                    float diagonalStripes (vec2 st, float width) {
+                        st.y -= st.x;
+                        return stripes(st, width);
+                    }
+
+    geometry-matrices:
+        mix: [block]
+        doc:
+            author:
+                name: Patricio Gonzalez Vivo
+                twitter: patriciogv
+            version: 0.0.1
+            tangram-version: 0.0.7
+            licence: MIT
+            description: |
+                Useful set of functions to construct scale, rotation and translation of 2, 3 or 4 dimensions. For more information about matrices read [this chapter from The Book of Shaders](http://thebookofshaders.com/08/)
+        shaders:
+            blocks:
+                global: |
+                    // Rotate in 2, 3 and 4 dimensions
+                    // ================================
+                    mat2 rotate2D (float angle) {
+                        return mat2(cos(angle),-sin(angle),
+                                    sin(angle),cos(angle));
+                    }
+                    #ifdef TANGRAM_FRAGMENT_SHADER
+                    vec2 rotate2D (vec2 st, float a) {
+                        return (rotate2D(a)*(st-.5))+.5;
+                    }
+                    #endif
+                    mat3 rotateX3D (float phi) {
+                        return mat3(
+                            vec3(1.,0.,0.),
+                            vec3(0.,cos(phi),-sin(phi)),
+                            vec3(0.,sin(phi),cos(phi)));
+                    }
+                    mat4 rotateX4D (float phi) {
+                        return mat4(
+                            vec4(1.,0.,0.,0),
+                            vec4(0.,cos(phi),-sin(phi),0.),
+                            vec4(0.,sin(phi),cos(phi),0.),
+                            vec4(0.,0.,0.,1.));
+                    }
+                    mat3 rotateY3D (float theta) {
+                        return mat3(
+                            vec3(cos(theta),0.,-sin(theta)),
+                            vec3(0.,1.,0.),
+                            vec3(sin(theta),0.,cos(theta)));
+                    }
+                    mat4 rotateY4D (float theta) {
+                        return mat4(
+                            vec4(cos(theta),0.,-sin(theta),0),
+                            vec4(0.,1.,0.,0.),
+                            vec4(sin(theta),0.,cos(theta),0.),
+                            vec4(0.,0.,0.,1.));
+                    }
+                    mat3 rotateZ3D (float psi) {
+                        return mat3(
+                            vec3(cos(psi),-sin(psi),0.),
+                            vec3(sin(psi),cos(psi),0.),
+                            vec3(0.,0.,1.));
+                    }
+                    mat4 rotateZ4D (float psi) {
+                        return mat4(
+                            vec4(cos(psi),-sin(psi),0.,0),
+                            vec4(sin(psi),cos(psi),0.,0.),
+                            vec4(0.,0.,1.,0.),
+                            vec4(0.,0.,0.,1.));
+                    }
+                    //
+                    // Scale 4 dimensions
+                    // ================================
+                    mat4 scale4D (float x, float y, float z) {
+                        return mat4(
+                            vec4(x,   0.0, 0.0, 0.0),
+                            vec4(0.0, y,   0.0, 0.0),
+                            vec4(0.0, 0.0, z,   0.0),
+                            vec4(0.0, 0.0, 0.0, 1.0)
+                        );
+                    }
+                    //
+                    // Translate in 4 dimensions
+                    mat4 translate4D (float x, float y, float z) {
+                        return mat4(
+                            vec4(1.0, 0.0, 0.0, 0.0),
+                            vec4(0.0, 1.0, 0.0, 0.0),
+                            vec4(0.0, 0.0, 1.0, 0.0),
+                            vec4(x,   y,   z,   1.0)
+                        );
+                    }
+
+    functions-aastep:
+        doc:
+            author:
+                name: Matt DesLauriers
+                twitter: mattdesl
+            version: 0.0.1
+            tangram-version: 0.0.7
+            licence: MIT
+            description: |
+                AnitAliased ```step()``` function implemented by [Matt DesLauriers](https://twitter.com/mattdesl) in this module <https://github.com/stackgl/glsl-aastep>
+        shaders:
+            extensions: OES_standard_derivatives
+            blocks:
+                global: |
+                    // AntiAliased Step function
+                    //=============================
+                    float aastep(float threshold, float value) {
+                        #ifdef TANGRAM_FRAGMENT_SHADER
+                            #ifdef TANGRAM_EXTENSION_OES_standard_derivatives
+                                float afwidth = length(vec2(dFdx(value), dFdy(value))) * 0.70710678118654757;
+                                return smoothstep(threshold-afwidth, threshold+afwidth, value);
+                            #else
+                                return step(threshold, value);
+                            #endif
+                        #else
+                            return step(threshold, value);
+                        #endif
+                    }
+
+    block:
+        shaders:
+            defines:
+                ADD: '+'
+                SUBTRACT: '-'
+                MULTIPLY: '*'
+
+                PI: 3.1415926535897932384626433832795
+                TWO_PI: 6.2831853071795864769252867665590
+                HALF_PI: 1.5707963267948966192313216916398
+                QUATER_PI: .785398163
+
+                EPSILON: 0.0000001
+
+                deg2rad(d): (((d)*3.1415926535897932384626433832795)/180.0)
+                rad2deg(d): (((d)*180.0)/3.1415926535897932384626433832795)
+
+    space-tile:
+        test:
+            tile:
+                defines:
+                    v_pos: 'v_texcoord'
+                blocks:
+                    color: |
+                        vec2 st = getTileCoords();
+                        color.rg += fract(st*3.);
+        shaders:
+            blocks:
+                global: |
+                    // Variant to be add to both vertex and fragments shaders
+                    #ifndef v_pos
+                    varying vec3 v_pos;
+                    #endif
+
+                    //
+                    // Get the coordinates in tile space
+                    // ================================
+                    vec2 getTileCoords() {
+                        return fract(v_pos.xy);
+                    }
+
+                position: |
+                    // Normalize the attribute position of a vertex
+                    v_pos = modelPosition().xyz;

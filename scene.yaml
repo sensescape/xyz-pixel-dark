@@ -206,6 +206,30 @@ layers:
                     color: [1.000,0.000,0.000]
                     visible: true
 
+        parks-and-national-forests-not-national-park:
+            filter:
+                all:
+                    - $zoom: { min: 4 }
+                    - kind: [park, national_park]
+                any:
+                    - not: { operator: [ "United States National Park Service", "United States Forest Service" ] }
+                    - not: { protect_class: ['2','3','5','6'] }
+            # default for national forests and more?
+            draw:
+                polygons:
+                    style: parks-pixelate
+                    color: [0.038,0.130,0.093]
+                    visible: true
+            national_park:
+                #filter: function() { return feature.name && (feature.name.indexOf('National Park') > -1); }
+                filter:
+                    all:
+                        - kind: parks-pixelate
+                        - not: [ protect_class: ['2','3','5','6'], operator: [ "United States National Park Service"] ]
+                draw:
+                    polygons:
+                        visible: true
+
     # roads:
     #     data: { source: mapzen, layer: roads }
     #     draw:
@@ -492,7 +516,7 @@ styles:
                         #endif
                     }
 
-    polygons_transparent:
+    polygons-transparent:
         base: polygons
         blend: overlay
 

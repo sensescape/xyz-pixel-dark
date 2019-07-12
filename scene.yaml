@@ -230,6 +230,15 @@ layers:
                     polygons:
                         visible: true
 
+        golf_course:
+            filter:
+                kind: golf_course
+            draw:
+                polygons:
+                    style: parks-pixelate
+                    color: [0.118,0.160,0.152]
+                    visible: true
+
         university:
             filter:
                 all:

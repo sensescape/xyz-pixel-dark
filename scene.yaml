@@ -235,7 +235,8 @@ layers:
                 kind: golf_course
             draw:
                 polygons:
-                    style: parks-pixelate
+                    style: checker
+                    # style: parks-pixelate
                     color: [0.118,0.160,0.152]
                     visible: true
 
@@ -388,7 +389,36 @@ layers:
                     visible: true
                     style: buildings-pixelate
 
+            extrude:
+                filter:
+                    all:
+                        - $zoom: { min: 15 }
+                        - height: { min: 200 }
+                        - not:
+                            - layer: [-1, -2, -3, -4, -5]
+                draw:
+                    polygons:
+                        style: polygons-windows
+                        # style: polygons-glass-walls
+                        visible: true
+                        color: [0.500,0.500,0.500]
+                        extrude: global.building_extrude_height
+
 styles:
+    checker:
+        base: polygons
+        texcoords: true
+        shaders:
+            blocks:
+                color: |
+                    vec2 st = v_texcoord.xy;
+                    vec2 f_st = fract(st*10.);
+                    vec2 i_st = floor(st*10.);
+                    color.rg = f_st;
+                    if (mod(i_st.y,0.15) - mod(i_st.x,0.15) == 0. ) {
+                        color.rgb -= 0.2;
+                    }
+
     earth-pixelate:
         base: polygons
         mix: [polygons-pixelate]
@@ -481,6 +511,110 @@ styles:
                     color.rgb = mix(PIXELATE_BACKGROUND_COLOR,
                                     PIXELATE_COLOR,
                                     random(floor(getTileCoords()*PIXELATE_SCALE)));
+
+    polygons-glass-walls:
+        doc:
+            author: 
+                name: Patricio Gonzalez Vivo
+                twitter: patriciogv
+            version: 0.0.1
+            tangram-version: 0.0.7
+            licence: MIT
+            description: |
+                Apply a glass walls to the sides of a geometry
+            examples:
+                gotham:
+                    url: https://tangrams.github.io/tangram-sandbox/styles/gotham.yaml
+                    img: https://tangrams.github.io/tangram-sandbox/styles/gotham.png
+                    lines: 131
+        texcoords: true
+        base: polygons
+        mix: [geometry-normal,  generative-random]
+        material:
+            shininess: 1.
+            specular: 0.0
+            emission: 0.0
+        shaders:
+            blocks:
+                color: |
+                    color.rgb *= vec3(min((worldPosition().z*.001 + .5),1.));
+                    
+                    if (isWall()) {
+                        vec2 st = vec2(v_texcoord.x*10.,worldPosition().z*0.2);
+                        vec2 ipos = floor(st);
+                        vec2 fpos = fract(st);
+                        if ( step(0.01,fpos.x)*step(0.1,fpos.y) > 0.0 ){
+                            material.specular = vec4(1.) * max( 1.-(worldPosition().z*.001 + .5), 0. );
+                            material.emission = vec4(0.700,0.700,0.700,1.0) * step(.5,random(ipos*vec2(0.0000001,0.01)+floor(worldNormal().xy*10.0)));
+                            material.emission *= vec4(0.450,0.450,0.450,1.0) * step(.5,random(ipos));
+                        }
+                    }
+                filter: |
+                    color.rgb += vec3(1.)* min( 1.0-(worldPosition().z*.001 + .8) , 0.25 );
+
+    polygons-windows:
+        doc:
+            author: 
+                name: Patricio Gonzalez Vivo
+                twitter: patriciogv
+            version: 0.0.1
+            tangram-version: 0.0.7
+            licence: MIT
+            description: |
+                Apply a windows patterns on the walls of a geometry
+            examples:
+                gotham:
+                    url: https://tangrams.github.io/tangram-sandbox/styles/gotham.yaml
+                    img: https://tangrams.github.io/tangram-sandbox/styles/gotham.png
+                    lines: 128
+        texcoords: true
+        base: polygons
+        mix: [geometry-normal, generative-random]
+        material:
+            shininess: 1.
+            specular: 0.0
+            emission: 0.0
+        shaders:
+            blocks:
+                color: |
+                    color.rgb *= vec3(min((worldPosition().z*.001 + .5),1.));
+                    float t = 0.5;
+                    if (isWall()) {
+                        vec2 st = vec2(v_texcoord.x*8.,worldPosition().z*0.2);
+                        vec2 ipos = floor(st);
+                        vec2 fpos = fract(st);
+                        if ( step(0.2,fpos.x)*step(0.2,fpos.y) > 0.0 ){
+                            material.specular = vec4(1.) * max( 1.-(worldPosition().z*.001 + .5), 0. );
+                            material.emission = vec4(0.300,0.300,0.300,1.0) * step(.5,random(ipos+floor(worldNormal().xy*10.0)+t));
+                        }
+                    }
+                filter: |
+                    color.rgb += vec3(1.)* min( 1.-(worldPosition().z*.001 + .7) , 0.5 );
+
+    geometry-normal:
+        doc:
+            author: 
+                name: Patricio Gonzalez Vivo
+                twitter: patriciogv
+            version: 0.0.1
+            tangram-version: 0.0.7
+            licence: MIT
+            description: |  
+                Functions to detect if the surface is a wall (`bool isWall()`) or a roof ('bool isRoof()') based on the normals
+        shaders:
+            blocks:
+                global: |
+                    #ifdef TANGRAM_FRAGMENT_SHADER
+                    // Ask to the geometry normals if this surface is a Wall
+                    bool isWall () {
+                        return dot(vec3(0., 0., 1.), worldNormal()) < 1.0 - TANGRAM_EPSILON;
+                    }
+                    //
+                    // Ask to the geometry normals if this surface is a roof
+                    bool isRoof () {
+                        return !isWall();
+                    }
+                    #endif
 
     generative-random:
         test:

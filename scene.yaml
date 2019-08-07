@@ -489,10 +489,10 @@ styles:
             uniforms:
                 u_colors:
                     - [0.0, 0.0, 0.0] # lower-left
-                    - [0.17, 0.25, 0.25] # lower-right
+                    - [0.14, 0.21, 0.21] # lower-right
                     - [0.0, 0.0, 0.0] # upper-left
                     - [0.1, 0.1, 0.1] # upper-right
-                u_grid_size: 18
+                u_grid_size: 21
             blocks:
                 color: |
                     vec2 st = getTileCoords();

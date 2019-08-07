@@ -203,8 +203,9 @@ layers:
             filter: { kind: [forest, natural_forest, wood, natural_wood, natural_park], $zoom: { min: 10 }, not: { operator: "United States Forest Service" } }
             draw:
                 polygons:
-                    style: parks-stripes
-                    color: [1.000,0.000,0.000]
+                    # style: parks-stripes-gradient
+                    style: parks-stripes-2-gradients
+                    # color: [1.000,0.000,0.000]
                     visible: true
 
         parks-and-national-forests-not-national-park:
@@ -249,8 +250,8 @@ layers:
                     - $zoom: { min: 14 }
             draw:
                 polygons:
-                    style: university-stripes
-                    color: [0.900,0.900,0.900]
+                    style: university-stripes-gradient
+                    # color: [0.900,0.900,0.900]
                     visible: true
 
     # roads:
@@ -430,6 +431,15 @@ styles:
                 PIXELATE_COLOR: color.rgb*.12
                 PIXELATE_BACKGROUND_COLOR: color.rgb
 
+    water-pixelate:
+        base: polygons
+        mix: [polygons-pixelate]
+        shaders:
+            defines:
+                PIXELATE_SCALE: 5.
+                PIXELATE_COLOR: color.rgb*.295
+                PIXELATE_BACKGROUND_COLOR: color.rgb
+
     buildings-pixelate:
         base: polygons
         mix: [polygons-pixelate]
@@ -448,20 +458,54 @@ styles:
                 PIXELATE_COLOR: color.rgb*.17
                 PIXELATE_BACKGROUND_COLOR: color.rgb
 
-    parks-stripes:
+    ## gradient across screen space
+    ## color.rgb = mix(mix(u_colors[0], u_colors[1], gl_FragCoord.x),
+    ##             mix(u_colors[2], u_colors[3], gl_FragCoord.x),
+    ##             stripes(st*50.,
+    ##             STRIPES_WIDTH,
+    ##             STRIPES_ANGLE));
+
+    parks-stripes-2-gradients:
+        base: polygons
+        mix: [functions-aastep, patterns-stripes, space-screen, space-tile]
+        shaders:
+            uniforms:
+                u_colors:
+                    - [0.05,0.05,0.05] # lower-left
+                    - [0.00,0.00,0.00] # lower-right
+                    - [0.07,0.07,0.18] # upper-left
+                    - [0.07,0.15,0.07] # upper-right
+            defines:
+                STRIPES_WIDTH: .65
+                STRIPES_ALPHA: 1.0
+                STRIPES_SCALE: 1.
+                STRIPES_ANGLE: 3.14159265
+            blocks:
+                color: |
+                    //vec2 st = getScreenNonStretchCoords();
+                    vec2 st = getTileCoords();
+
+                    color.rgb = mix(mix(u_colors[0], u_colors[1], gl_FragCoord.x/u_resolution.x),
+                                mix(u_colors[2], u_colors[3], gl_FragCoord.x/u_resolution.x),
+                                stripes(st*40.,
+                                        STRIPES_WIDTH,
+                                        STRIPES_ANGLE));
+                    
+
+    parks-stripes-gradient:
         base: polygons
         mix: [polygons-stripes]
         shaders:
             defines:
                 STRIPES_SCALE: 30
                 STRIPES_WIDTH: 0.75
-                STRIPES_ALPHA: 0.52
+                STRIPES_ALPHA: 1.0
                 STRIPES_ANGLE: 3.14159265
             blocks:
                 filter: |
-                    color.rgb = mix(vec3(0.082,0.090,0.090), vec3(0.092,0.116,0.120), gl_FragCoord.x / u_resolution.x);
+                    color.rgb = mix(vec3(0.020,0.020,0.020), vec3(0.092,0.116,0.120), gl_FragCoord.x / u_resolution.x);
 
-    university-stripes:
+    university-stripes-gradient:
         base: polygons
         mix: [polygons-stripes]
         shaders:
@@ -472,7 +516,7 @@ styles:
                 STRIPES_ANGLE: 3.14159265
             blocks:
                 filter: |
-                    color.rgb = mix(vec3(0.140,0.135,0.133), vec3(0.092,0.116,0.120), gl_FragCoord.x / u_resolution.x);
+                    color.rgb = mix(vec3(0.140,0.135,0.133), vec3(0.020,0.020,0.020), gl_FragCoord.x / u_resolution.x);
 
     grid-gradient:
         base: polygons
@@ -557,15 +601,6 @@ styles:
                         );
                         return st;
                     }
-
-    water-pixelate:
-        base: polygons
-        mix: [polygons-pixelate]
-        shaders:
-            defines:
-                PIXELATE_SCALE: 5.
-                PIXELATE_COLOR: color.rgb*.295
-                PIXELATE_BACKGROUND_COLOR: color.rgb
 
     # water-pixelate-noise1
     # mix: [pattern-noise,polygons-pixelate] # draws double polygons-pixelate
@@ -724,6 +759,58 @@ styles:
                         return !isWall();
                     }
                     #endif
+
+    space-screen:
+        doc:
+            author: 
+                name: Patricio Gonzalez Vivo
+                twitter: patriciogv
+            version: 0.0.1
+            tangram-version: 0.0.7
+            licence: MIT
+            description: |
+                Get the coordinates in screen space streaching the proportion ('vec2 getScreenCoords ()') or non-streatching the proportion ('getScreenNonStretchCoords ()')
+            examples:
+                press:
+                    url: https://tangrams.github.io/tangram-sandbox/styles/press.yaml
+                    img: https://tangrams.github.io/tangram-sandbox/styles/press.png
+                    lines: 136-145
+                radar:
+                    url: https://tangrams.github.io/tangram-sandbox/styles/radar.yaml
+                    img: https://tangrams.github.io/tangram-sandbox/styles/radar.png
+                    lines: 0-143
+        test:
+            screen:
+                blocks:
+                    color: |
+                        vec2 st = getScreenCoords();
+                        color.rg += fract(st*3.);
+            screen_nonstretch:
+                blocks:
+                    color: |
+                        vec2 st = getScreenNonStretchCoords();
+                        color.rg += fract(st*3.);
+        shaders:
+            blocks:
+                global: |
+                    #ifdef TANGRAM_FRAGMENT_SHADER
+                    vec2 getScreenCoords () {
+                        return gl_FragCoord.xy / u_resolution.xy;
+                    }
+
+                    vec2 getScreenNonStretchCoords () {
+                        vec2 st = getScreenCoords();
+                        if (u_resolution.y > u_resolution.x ) {
+                            st.y *= u_resolution.y/u_resolution.x;
+                            st.y -= (u_resolution.y*.5-u_resolution.x*.5)/u_resolution.x;
+                        } else {
+                            st.x *= u_resolution.x/u_resolution.y;
+                            st.x -= (u_resolution.x*.5-u_resolution.y*.5)/u_resolution.y;
+                        } 
+                        return st;
+                    }
+                    #endif
+
 
     generative-random:
         test:

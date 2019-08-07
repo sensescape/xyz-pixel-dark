@@ -235,7 +235,8 @@ layers:
                 kind: golf_course
             draw:
                 polygons:
-                    style: checker
+                    style: grid-gradient
+                    # style: checker
                     # style: parks-pixelate
                     color: [0.118,0.160,0.152]
                     visible: true
@@ -480,6 +481,27 @@ styles:
             blocks:
                 filter: |
                     color.rgb = mix(vec3(0.140,0.135,0.133), vec3(0.092,0.116,0.120), gl_FragCoord.x / u_resolution.x);
+
+    grid-gradient:
+        base: polygons
+        mix: [space-tile]
+        shaders:
+            uniforms:
+                u_colors:
+                    - [0.0, 0.0, 0.0] # lower-left
+                    - [0.17, 0.25, 0.25] # lower-right
+                    - [0.0, 0.0, 0.0] # upper-left
+                    - [0.1, 0.1, 0.1] # upper-right
+                u_grid_size: 18
+            blocks:
+                color: |
+                    vec2 st = getTileCoords();
+                    vec2 f_st = fract(st * u_grid_size);
+                    color.rgb = mix(
+                        mix(u_colors[0], u_colors[1], f_st.x),
+                        mix(u_colors[2], u_colors[3], f_st.x),
+                        f_st.y
+                    );
 
     polygons-pixelate:
         ui:

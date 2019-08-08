@@ -19,6 +19,20 @@ global:
     # https://mapzen.com/documentation/overview/#developer-accounts-and-api-keys
     sdk_api_key: '3eqm2_bfTNGZ85ar20fVyA'     # set this value to your Mapzen API key
 
+    text_font_family: 'Orbitron'
+
+# Fonts
+fonts:
+    Orbitron:
+        - weight: normal # Regular
+          # url: https://fonts.gstatic.com/s/orbitron/v7/94ug0rEgQO_WuI_xKJMFc3YhjbSpvc47ee6xR_80Hnw.woff
+          url: fonts/94ug0rEgQO_WuI_xKJMFc3YhjbSpvc47ee6xR_80Hnw.woff
+
+    Cairo:
+        - weight: normal # Regular
+          # url: https://fonts.gstatic.com/s/cairo/v1/ZA_4ooaF_Dfdn26t_IoQOaCWcynf_cDxXwCLxiixG1c.woff
+          url: fonts/ZA_4ooaF_Dfdn26t_IoQOaCWcynf_cDxXwCLxiixG1c.woff
+
 
 scene:
     background:
@@ -62,46 +76,6 @@ layers:
                 style: earth-pixelate
                 order: global.feature_order
                 color: [0.100,0.100,0.100]
-
-    # water:
-    #     data: { source: mapzen, layer: water }
-    #     draw:
-    #         polygons:
-    #             style: water-stripes
-    #             order: global.feature_order
-    #             color: [1.000,0.000,0.000]
-
-    #     lakes:
-    #         filter:
-    #             all:
-    #                 - kind: [ocean, lake, water, riverbank, reservoir, swimming_pool]
-    #             any:
-    #                 # limit show smaller landuse areas to higher zooms
-    #                 - { $zoom: [1],  area: { min: 10000000000 } }
-    #                 - { $zoom: [2],  area: { min: 7000000000 } }
-    #                 # some weird natural earth scale set transition
-    #                 - { $zoom: [3],  area: { min: 5000000000 } }
-    #                 - { $zoom: [4],  area: { min: 300000000 } }
-    #                 - { $zoom: [5],  area: { min: 50000000 } }
-    #                 - { $zoom: [6],  area: { min: 50000000 } }
-    #                 - { $zoom: [7],  area: { min: 50000000 } }
-    #                 - { $zoom: [8],  area: { min: 50000000 } }
-    #                 - { $zoom: [9],  area: { min: 15000000 } }
-    #                 - { $zoom: [10], area: { min: 4000000 } }
-    #                 - { $zoom: [11], area: { min: 1000000 } }
-    #                 - { $zoom: [12], area: { min: 250000 } }
-    #                 - { $zoom: [13], area: { min: 150000 } }
-    #                 - { $zoom: [14], area: { min: 40000 } }
-    #                 - { $zoom: { min: 15 } }
-    #         draw:
-    #             polygons:
-    #                 color: [1.000,0.000,0.000]
-
-    #     other-water-areas:
-    #         filter: { not: { kind: [ocean, lake, water, reservoir] }, $zoom: { min: 11 }, area: { min: 100 } }
-    #         draw:
-    #             polygons:
-    #                 color: [1.000,0.000,0.000]
 
     water:
         data: { source: mapzen, layer: water }
@@ -254,117 +228,257 @@ layers:
                     # color: [0.900,0.900,0.900]
                     visible: true
 
-    # roads:
-    #     data: { source: mapzen, layer: roads }
-    #     draw:
-    #         lines:
-    #             #color: black
-    #             width: 1px
-    #             order: global.feature_order
-    #             # but give them all the same outline
-    #             outline:
-    #                 order: 352
+    roads:
+        data: { source: mapzen, layer: roads }
+        draw:
+            lines:
+                width: 1px
+                order: global.feature_order
+                outline:
+                    order: 352
 
-    #     early:
-    #         filter: { $zoom: { max: 15 } }
-    #         draw:
-    #             lines:
-    #                 outline:
-    #                     order: global.feature_order
+        early:
+            filter: { $zoom: { max: 15 } }
+            draw:
+                lines:
+                    outline:
+                        order: global.feature_order
 
-    #     bridges-tunnels:
-    #         filter: { any: [is_bridge: true, is_tunnel: true] }
-    #         draw:
-    #             lines:
-    #                 # cap: butt
-    #                 outline:
-    #                     # except bridges and tunnels, their outlines should also self-sort
-    #                     order: global.feature_order
+        bridges-tunnels:
+            filter: { any: [is_bridge: true, is_tunnel: true] }
+            draw:
+                lines:
+                    # cap: butt
+                    outline:
+                        # except bridges and tunnels, their outlines should also self-sort
+                        order: global.feature_order
 
-    #     # default outlines starting at zoom 16
-    #     default-outline-width:
-    #         filter: { $zoom: { min: 16 } }
-    #         draw:
-    #             lines:
-    #                 outline:
-    #                     width: function () { return 3/16 * Math.log($zoom); }
+        # default outlines starting at zoom 16
+        default-outline-width:
+            filter: { $zoom: { min: 16 } }
+            draw:
+                lines:
+                    outline:
+                        width: function () { return 3/16 * Math.log($zoom); }
 
-    #     natural_earth_highways:
-    #         filter: { $zoom: { min: 5, max: 8 } }
-    #         draw:
-    #             lines:
-    #                 cap: round
-    #                 join: round
-    #                 color: [0.280,0.280,0.280]
-    #                 width: 1px
-    #         major_road:
-    #             filter: { kind: major_road }
-    #             draw:
-    #                 lines:
-    #                     color: [0.280,0.280,0.280]
-    #                     width: 0.5px
+        natural_earth_highways:
+            filter: { $zoom: { min: 5, max: 8 } }
+            draw:
+                lines:
+                    cap: round
+                    join: round
+                    color: [0.290,0.290,0.290]
+                    width: 1px
+            major_road:
+                filter: { kind: major_road }
+                draw:
+                    lines:
+                        color: [0.290,0.290,0.290]
+                        width: 0.5px
+            ferry:
+                filter: { kind: ferry }
+                draw:
+                    lines:
+                        visible: false
 
-    #     highway:
-    #         filter: { kind: highway, $zoom: { min: 8 } }
-    #         draw:
-    #             lines:
-    #                 color: [[5,[0.280,0.280,0.280]], [12,[0.280,0.280,0.280]]]
-    #                 width: [[5, 0px], [8, 0.1px], [12, 0.1px], [14, 2px], [16, 6.5px], [17, 22m]]
-    #                 outline:
-    #                     color: [[5,[0.280,0.280,0.280]], [14,[0.280,0.280,0.280]], [16,[0.280,0.280,0.280]]]
-    #                     width: [[5, 0px], [12, 0.5px], [14, 1px]]
+        highway:
+            filter: { kind: highway, $zoom: { min: 8 } }
+            draw:
+                lines:
+                    color: [[5,[0.290,0.290,0.290]], [12,[0.000,0.000,0.000]]]
+                    width: [[5, 0px], [8, 0.1px], [12, 0.1px], [14, 2px], [16, 6.5px], [17, 22m]]
+                    outline:
+                        color: [[5,[0.290,0.290,0.290]], [14,[0.290,0.290,0.290]]]
+                        width: [[5, 0px], [12, 0.5px], [14, 1px], [16, 2px]]
 
-    #         link:
-    #             filter: { is_link: true } # on- and off-ramps, etc
-    #             draw:
-    #                 lines:
-    #                     color: [0.280,0.280,0.280]
-    #                     width: [[8, 0px], [13, 0px], [18, 2px]]
-    #                     outline:
-    #                         width: 0px
-    #             early_link:
-    #                 filter: { $zoom: { max: 15 } }
-    #                 draw:
-    #                     lines:
-    #                         # except bridges and tunnels, their outlines should also self-sort
-    #                         order: 352
-    #             tunnel-link:
-    #                 filter: {is_tunnel: true, $zoom: {min: 13} }
-    #                 draw:
-    #                     lines:
-    #                         color: [0.280,0.280,0.280]
-    #                         outline:
-    #                             color: [0.280,0.280,0.280]
+            link:
+                filter: { is_link: true } # on- and off-ramps, etc
+                draw:
+                    lines:
+                        color: [0.290,0.290,0.290]
+                        width: [[8, 0px], [13, 0px], [18, 2px]]
+                        outline:
+                            width: 0px
+                early_link:
+                    filter: { $zoom: { max: 15 } }
+                    draw:
+                        lines:
+                            # except bridges and tunnels, their outlines should also self-sort
+                            order: 352
+                tunnel-link:
+                    filter: {is_tunnel: true, $zoom: {min: 13} }
+                    draw:
+                        lines:
+                            color: [0.000,0.000,0.000]
+                            outline:
+                                color: [0.150,0.150,0.150]
 
-    #         tunnel:
-    #             filter: {is_tunnel: true, $zoom: {min: 13} }
-    #             draw:
-    #                 lines:
-    #                     color: [0.280,0.280,0.280]
-    #                     outline:
-    #                         color: [0.280,0.280,0.280]
+            tunnel:
+                filter: {is_tunnel: true, $zoom: {min: 13} }
+                draw:
+                    lines:
+                        color: [0.000,0.000,0.000]
+                        outline:
+                            color: [0.150,0.150,0.150]
 
-    #         highway_bridge:
-    #             filter: {is_bridge: true}
-    #             draw:
-    #                 lines:
-    #                     cap: round
-    #                     outline:
-    #                         cap: butt
+            highway_bridge:
+                filter: {is_bridge: true}
+                draw:
+                    lines:
+                        cap: round
+                        outline:
+                            cap: butt
 
-        # major_road:
-        #     filter: { kind: major_road, $zoom: { min: 13 } }
-        #     draw:
-        #         lines:
-        #             color: [0.460,0.460,0.460]
-        #             width: [[13,0px], [18,2px]]
+        major_road:
+            filter: { kind: major_road, $zoom: { min: 11 } }
+            # default style
+            draw:
+                lines:
+                    color: [[13, [0.290,0.290,0.290]], [16, [0.000,0.000,0.000]]]
+                    width: [[13, 0.25px], [16,0.1px], [18, 4px]]
+                    outline:
+                        color: [0.290,0.290,0.290]
+                        width: [[13, 0px], [15, 0.1px], [17, 1px]]
+            trunk_primary:
+                filter: { kind_detail: [trunk, primary] }
+                draw:
+                    lines:
+                        color: [[13, [0.290,0.290,0.290]], [14, [0.000,0.000,0.000]]]
+                        width: [[13, 0.25px], [14, 0.1px], [15, 2px], [17, 8px], [18, 10m]]
+                        outline:
+                            color: [0.290,0.290,0.290]
+                            width: [[13, 0px], [16, 1px]]
+                early:
+                    filter: { $zoom: { max: 16 } }
+                    draw:
+                        lines:
+                            order: 352
+                            outline:
+                                order: function() { return feature.sort_rank + 2; }
+                    primary:
+                        filter: { kind: [primary] }
+                        draw:
+                            lines:
+                                outline:
+                                    order: function() { return feature.sort_rank + 1; }
+                routes:
+                    filter: { ref: true }
+                    draw:
+                        lines:
+                            color: [[11,[0.290,0.290,0.290]], [12, [0.000,0.000,0.000]]]
+                            width: [[11, 0.25px], [12, 0.1px], [15, 1.25px], [16, 2px], [17, 8px], [18, 10m]]
+                            outline:
+                                color: [0.290,0.290,0.290]
+                                width: [[11, 0px], [14, 0.5px], [17, 1px]]
+                    early:
+                        filter: { $zoom: { max: 16 } }
+                        draw:
+                            lines:
+                                order: function() { return feature.sort_rank + 2; }
+                                outline:
+                                    order: 353
+                    tunnel:
+                        filter: { is_tunnel: true, $zoom: { min: 13 } }
+                        draw:
+                            lines:
+                                color: [[11,[0.150,0.150,0.150]], [12, [0.000,0.000,0.000]]]
+                                outline:
+                                    color: [0.150,0.150,0.150]
+            link:
+                filter: { is_link: true } # on- and off-ramps, etc
+                draw:
+                    lines:
+                        color: [[11,[0.290,0.290,0.290]], [12, [0.000,0.000,0.000]]]
+                        width: [[11, 0.25px], [12, 0.1px], [15, 1.25px], [18, 8px]]
+                        outline:
+                            color: [0.290,0.290,0.290]
+                            width: [[11, 0px], [14, 0.5px], [17, 1px]]
+            tunnel:
+                filter: { is_tunnel: true, $zoom: { min: 13 } }
+                draw:
+                    lines:
+                        color: [[13, [0.150,0.150,0.150]], [16, [0.000,0.000,0.000]]]
+                        outline:
+                            color: [0.150,0.150,0.150]
+            secondary:
+                filter: { kind_detail: secondary }
+                draw:
+                    lines:
+                        color: [0.290,0.290,0.290]
+                        width: [[13,0px], [15,1px], [18,1.5px]]
+                        outline:
+                            width: 0px
+                early:
+                    filter: { $zoom: { max: 16 } }
+                    draw:
+                        lines:
+                            order: 352
+                            outline:
+                                order: 353 #function() { return feature.sort_rank + 2; }
+                routes:
+                    filter: { ref: true, $zoom: { min: 12 } }
+                    draw:
+                        lines:
+                            color: [0.290,0.290,0.290]
+                    early:
+                        filter: { $zoom: { max: 15 } }
+                        draw:
+                            lines:
+                                order: function() { return feature.sort_rank + 2; }
+                                outline:
+                                    order: 353
+                    tunnel:
+                        filter: {is_tunnel: true, $zoom: { min: 13 } }
+                        draw:
+                            lines:
+                                color: [0.150,0.150,0.150]
+
+
+            tertiary:
+                filter: { kind_detail: [tertiary, tertiary_link] }
+                draw:
+                    lines:
+                        color: [0.290,0.290,0.290]
+                        width: [[13,0px], [15,1px], [18,1.5px]]
+                        outline:
+                            width: 0px
+                early:
+                    filter: { $zoom: { max: 15 } }
+                    draw:
+                        lines:
+                            order: 352
+                            outline:
+                                order: function() { return feature.sort_rank + 3; }
+                routes:
+                    filter: { ref: true, $zoom: { min: 12 } }
+                    draw:
+                        lines:
+                            color: [0.290,0.290,0.290]
+                    early:
+                        filter: { $zoom: { max: 15 } }
+                        draw:
+                            lines:
+                                order: function() { return feature.sort_rank + 3; }
+                                outline:
+                                    order: 353
+                    tunnel:
+                        filter: { is_tunnel: true, $zoom: { min: 13 } }
+                        draw:
+                            lines:
+                                color: [0.150,0.150,0.150]
+                link:
+                    filter: { is_link: true } # on- and off-ramps, etc
+                    draw:
+                        lines:
+                            color: [0.290,0.290,0.290]
+
 
         # minor_road:
         #     filter: { kind: minor_road, not: { kind_detail: service }, $zoom: { min: 16 } }
         #     draw:
         #         lines:
-        #             color: [0.460,0.460,0.460]
-        #             width: [[16,0px], [18,2px]]
+        #             color: [0.650,0.650,0.650]
+        #             width: [[16,0px], [18,1px]]
 
     buildings:
         data: { source: mapzen, layer: buildings }
@@ -407,7 +521,176 @@ layers:
                         color: [0.500,0.500,0.500]
                         extrude: global.building_extrude_height
 
+    places:
+        data: { source: mapzen, layer: places }
+        filter:
+            name: true
+        draw:
+            text-blend-order:
+                visible: false    # labels are enabled by each layer below
+                buffer: 3px
+                font:
+                    family: global.text_font_family
+                    fill: [0.800,0.800,0.800]
+            # END NOTE
+
+        populated-places:
+            filter:
+                kind: locality
+            draw:
+                text-blend-order:
+                    visible: true
+                    buffer: 42px
+                    font:
+                        size: [[5,9px],[8,10px],[12,11px]]
+                        stroke: { color: [0.000,0.000,0.000], width: 6px }
+
+            # _text_early:
+            #     filter: { $zoom: { max: 11 } }
+            #     draw:
+            #         text-blend-order:
+            #             visible: false
+
+
+            # HACK
+            # NOTE: These should use icon: buffer instead of going visible: false, but there are problems using icon here :(
+            # This fixes Paris area, but causes problems for small places in the USA eg Table Bluff near Eureka, California.
+            funky-village:
+                filter: { $zoom: [11], population: { max: 1000 }, kind_detail: [village] }
+                draw:
+                    text-blend-order:
+                        visible: false
+            funky-isolated_dwelling:
+                filter: { $zoom: [13], kind_detail: [isolated_dwelling] }
+                draw:
+                    text-blend-order:
+                        visible: false
+            hamlet:
+                filter: { $zoom: [13], kind_detail: hamlet }
+                draw:
+                    text-blend-order:
+                        visible: false
+            # END HACK
+
+            # someone in London and Salt Lake City thought neighbourhoods should be tagged place: locality
+            # They were wrong
+            funky-fake-neighbourhoods:
+                filter: { $zoom: { min: 13 }, kind_detail: [locality] }
+                draw:
+                    text-blend-order:
+                        visible: false
+
+
+            population-10m-up:
+                filter:
+                    population: { min: 10000000 }
+                draw:
+                    text-blend-order:
+                        priority: 6
+                        font:
+                            size: [[2,11px],[6,15px],[8,18px],[10,20px],[12,20px],[13,0px]]
+            population-5m-10m:
+                filter:
+                    population: { min: 5000000, max: 10000000 }
+                draw:
+                    text-blend-order:
+                        priority: 7
+                        font:
+                            size: [[4,10px],[6,14px],[8,18px],[10,20px],[12,20px],[13,0px]]
+            population-1m-5m:
+                filter:
+                    population: { min: 1000000, max: 5000000 }
+                draw:
+                    text-blend-order:
+                        priority: 9
+                        font:
+                            size: [[4,10px],[6,14px],[8,15px],[12,18px],[13,0px]]
+            population-500k-1m:
+                filter:
+                    population: { min: 500000, max: 1000000 }
+                draw:
+                    text-blend-order:
+                        priority: 11
+                        font:
+                            size: [[5,10px],[8,12px],[10,14px],[12,16px],[13,0px]]
+            population-200k-500k:
+                filter:
+                    population: { min: 200000, max: 500000 }
+                draw:
+                    text-blend-order:
+                        priority: 13
+                        font:
+                            size: [[6,10px],[8,14px],[10,15px],[12,16px],[13,0px]]
+            population-100k-200k:
+                filter:
+                    population: { min: 100000, max: 200000 }
+                draw:
+                    text-blend-order:
+                        priority: 15
+                        font:
+                            size: [[6,10px],[8,12px],[14,14px],[15,0px]]
+            population-50k-100k:
+                filter:
+                    population: { min: 50000, max: 100000 }
+                draw:
+                    text-blend-order:
+                        priority: 17
+                        font:
+                            size: [[6,10px],[8,12px],[14,14px],[15,0px]]
+            population-20k-50k:
+                filter:
+                    population: { min: 20000, max: 50000 }
+                draw:
+                    text-blend-order:
+                        priority: 19
+                        font:
+                            size: [[9,10px],[14,12px],[15,0px]]
+            population-10k-20k:
+                filter:
+                    population: { min: 10000, max: 20000 }
+                draw:
+                    text-blend-order:
+                        priority: 21
+                        font:
+                            size: [[9, 10px],[14, 12px],[15, 0px]]
+            population-5k-10k:
+                filter:
+                    population: { min: 5000, max: 10000 }
+                draw:
+                    text-blend-order:
+                        priority: 23
+                        font:
+                            size: [[9,10px], [14,12px], [15,0px]]
+            population-2k-5k:
+                filter:
+                    population: { min: 2000, max: 5000 }
+                draw:
+                    text-blend-order:
+                        priority: 25
+                        font:
+                            size: [[9,10px], [14,12px], [15,0px]]
+            population-1k-2k:
+                filter:
+                    population: { min: 1000, max: 2000 }
+                draw:
+                    text-blend-order:
+                        priority: 27
+                        font:
+                            size: [[9, 10px], [14, 12px], [15, 0px]]
+            population-200-1k:
+                filter:
+                    population: { min: 200, max: 1000 }
+                draw:
+                    text-blend-order:
+                        priority: 28
+                        font:
+                            size: [[9, 10px], [14, 11px], [15, 0px]]
+
 styles:
+    text-blend-order:
+        base: text
+        blend_order: 1
+
     checker:
         base: polygons
         texcoords: true

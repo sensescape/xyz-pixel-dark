@@ -84,7 +84,8 @@ layers:
                 style: water-pixelate
                 # style: water-pixelate-noise1
                 order: global.feature_order
-                color: [0.266,0.274,0.300]
+                # color: [0.266,0.274,0.300]
+                color: [0.189,0.216,0.270]
 
         lakes:
             filter:
@@ -110,13 +111,15 @@ layers:
                     - { $zoom: { min: 15 } }
             draw:
                 polygons:
-                    color: [0.266,0.274,0.300]
+                    # color: [0.266,0.274,0.300]
+                    color: [0.189,0.216,0.270]
 
         other-water-areas:
             filter: { not: { kind: [ocean, lake, water, reservoir] }, $zoom: { min: 11 }, area: { min: 100 } }
             draw:
                 polygons:
-                    color: [0.266,0.274,0.300]
+                    # color: [0.266,0.274,0.300]
+                    color: [0.189,0.216,0.270]
 
     landuse:
         data: { source: mapzen }
@@ -157,7 +160,8 @@ layers:
             draw:
                 polygons:
                     style: parks-pixelate
-                    color: [0.128,0.150,0.150]
+                    # color: [0.128,0.150,0.150]
+                    color: [0.073,0.125,0.170]
                     visible: true
 
         national_forest_level_6:
@@ -194,7 +198,8 @@ layers:
             draw:
                 polygons:
                     style: parks-pixelate
-                    color: [0.038,0.130,0.093]
+                    # color: [0.038,0.130,0.093]
+                    color: [0.098,0.171,0.200]
                     visible: true
             national_park:
                 #filter: function() { return feature.name && (feature.name.indexOf('National Park') > -1); }
@@ -720,7 +725,7 @@ styles:
         shaders:
             defines:
                 PIXELATE_SCALE: 5.
-                PIXELATE_COLOR: color.rgb*.295
+                PIXELATE_COLOR: color.rgb*.395
                 PIXELATE_BACKGROUND_COLOR: color.rgb
 
     buildings-pixelate:

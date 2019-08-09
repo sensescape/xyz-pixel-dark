@@ -218,9 +218,9 @@ layers:
                 kind: golf_course
             draw:
                 polygons:
-                    style: grid-gradient
+                    # style: grid-gradient
                     # style: checker
-                    # style: parks-pixelate
+                    style: parks-pixelate
                     color: [0.118,0.160,0.152]
                     visible: true
 
@@ -511,7 +511,8 @@ layers:
             draw:
                 polygons:
                     visible: true
-                    style: buildings-pixelate
+                    # style: buildings-pixelate
+                    style: grid-gradient
 
             extrude:
                 filter:
@@ -754,9 +755,9 @@ styles:
         shaders:
             uniforms:
                 u_colors:
-                    - [0.070,0.142,0.170] # lower-left
+                    - [0.033,0.088,0.110] # lower-left
                     - [0.00,0.00,0.00] # lower-right
-                    - [0.095,0.161,0.220] # upper-left
+                    - [0.082,0.139,0.190] # upper-left
                     - [0.043,0.095,0.140] # upper-right
             defines:
                 STRIPES_WIDTH: .65

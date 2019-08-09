@@ -179,7 +179,7 @@ layers:
                 polygons:
                     # style: parks-stripes-gradient
                     style: parks-stripes-2-gradients
-                    # color: [1.000,0.000,0.000]
+                    color: [0.000,0.000,0.000]
                     visible: true
 
         parks-and-national-forests-not-national-park:
@@ -225,7 +225,7 @@ layers:
             draw:
                 polygons:
                     style: university-stripes-gradient
-                    # color: [0.900,0.900,0.900]
+                    color: [0.000,0.000,0.000]
                     visible: true
 
     roads:

@@ -748,13 +748,6 @@ styles:
                 PIXELATE_COLOR: color.rgb*.17
                 PIXELATE_BACKGROUND_COLOR: color.rgb
 
-    ## gradient across screen space
-    ## color.rgb = mix(mix(u_colors[0], u_colors[1], gl_FragCoord.x),
-    ##             mix(u_colors[2], u_colors[3], gl_FragCoord.x),
-    ##             stripes(st*50.,
-    ##             STRIPES_WIDTH,
-    ##             STRIPES_ANGLE));
-
     parks-stripes-2-gradients:
         base: polygons
         mix: [functions-aastep, patterns-stripes, space-screen, space-tile]
@@ -763,7 +756,7 @@ styles:
                 u_colors:
                     - [0.070,0.142,0.170] # lower-left
                     - [0.00,0.00,0.00] # lower-right
-                    - [0.125,0.213,0.290] # upper-left
+                    - [0.095,0.161,0.220] # upper-left
                     - [0.043,0.095,0.140] # upper-right
             defines:
                 STRIPES_WIDTH: .65
@@ -780,6 +773,14 @@ styles:
                                 stripes(st*40.,
                                         STRIPES_WIDTH,
                                         STRIPES_ANGLE));
+
+    ## notes for parks-stripes-2-gradients
+    ## gradient across screen space
+    ## color.rgb = mix(mix(u_colors[0], u_colors[1], gl_FragCoord.x),
+    ##             mix(u_colors[2], u_colors[3], gl_FragCoord.x),
+    ##             stripes(st*50.,
+    ##             STRIPES_WIDTH,
+    ##             STRIPES_ANGLE));
                     
 
     parks-stripes-gradient:
@@ -814,10 +815,10 @@ styles:
         shaders:
             uniforms:
                 u_colors:
-                    - [0.0, 0.0, 0.0] # lower-left
-                    - [0.14, 0.21, 0.21] # lower-right
-                    - [0.0, 0.0, 0.0] # upper-left
-                    - [0.1, 0.1, 0.1] # upper-right
+                    - [0.119,0.242,0.290] # lower-left
+                    - [0.000,0.000,0.000] # lower-right
+                    - [0.000,0.000,0.000] # upper-left
+                    - [0.073,0.125,0.170] # upper-right
                 u_grid_size: 21
             blocks:
                 color: |

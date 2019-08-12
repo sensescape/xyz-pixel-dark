@@ -1,4 +1,4 @@
-![GRAPHIC SERIES](https://raw.githubusercontent.com/sensescape/xyz-pixel-dark/master/images/pixel-title1.jpg)
+![GRAPHIC SERIES](https://raw.githubusercontent.com/sensescape/xyz-pixel-dark/master/images/pixel-title2.jpg)
 
 
 

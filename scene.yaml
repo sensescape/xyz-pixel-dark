@@ -246,6 +246,7 @@ layers:
         data: { source: mapzen, layer: roads }
         draw:
             lines:
+                visible: true
                 width: 1px
                 order: global.feature_order
                 # but give them all the same outline

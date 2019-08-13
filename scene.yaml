@@ -139,7 +139,7 @@ layers:
                 polygons:
                     style: parks-pixelate
                     # color: [0.031,0.150,0.138]
-                    color: [0.122,0.169,0.290]
+                    color: [0.108,0.134,0.200]
                     visible: true
             us_national_park:
                 # yosemite national park, death valley national park, grand canyon national park
@@ -151,7 +151,7 @@ layers:
                     polygons:
                         style: parks-pixelate
                         # color: [0.031,0.150,0.138]
-                        color: [0.122,0.169,0.290]
+                        color: [0.108,0.134,0.200]
                         visible: true
 
         conservation:
@@ -760,9 +760,9 @@ styles:
         shaders:
             uniforms:
                 u_colors:
-                    - [0.033,0.088,0.110] # lower-left
+                    - [0.013,0.068,0.090] # lower-left
                     - [0.00,0.00,0.00] # lower-right
-                    - [0.082,0.139,0.190] # upper-left
+                    - [0.052,0.109,0.160] # upper-left
                     - [0.043,0.095,0.140] # upper-right
             defines:
                 STRIPES_WIDTH: .65

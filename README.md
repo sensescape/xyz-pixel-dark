@@ -1,8 +1,4 @@
-![GRAPHIC SERIES](https://raw.githubusercontent.com/sensescape/xyz-pixel-dark/master/images/pixel-title2.jpg)
-
-
-
-
+![GRAPHIC SERIES](https://raw.githubusercontent.com/sensescape/xyz-pixel-dark/master/images/pixel-title3.jpg)
 
 ![XYZ PIXEL DARK MAP](https://raw.githubusercontent.com/sensescape/xyz-pixel-dark/master/images/xyz-pixel-dark2.jpg)
 

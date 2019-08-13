@@ -4,9 +4,9 @@
 
 
 
-View the [xyz pixel map](https://sensescape.github.io/xyz-pixel-dark/#12/37.7784/-122.4331).
+![XYZ PIXEL DARK MAP](https://raw.githubusercontent.com/sensescape/xyz-pixel-dark/master/images/xyz-pixel-dark2.jpg)
 
-![XYZ PIXEL DARK MAP](https://raw.githubusercontent.com/sensescape/xyz-pixel-dark/master/images/xyz-pixel-dark1.jpg)
+View the [xyz pixel map](https://sensescape.github.io/xyz-pixel-dark/#12/37.7784/-122.4331).
 
 ### To run locally:
 

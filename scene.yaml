@@ -758,7 +758,7 @@ styles:
                     - [0.013,0.068,0.090] # lower-left
                     - [0.00,0.00,0.00] # lower-right
                     - [0.052,0.109,0.160] # upper-left
-                    - [0.043,0.095,0.140] # upper-right
+                    - [0.000,0.015,0.060] # upper-right
             defines:
                 STRIPES_WIDTH: .65
                 STRIPES_ALPHA: 1.0

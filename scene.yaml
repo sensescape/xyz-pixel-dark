@@ -218,8 +218,6 @@ layers:
                 kind: golf_course
             draw:
                 polygons:
-                    # style: grid-gradient
-                    # style: checker
                     style: parks-pixelate
                     color: [0.118,0.160,0.152]
                     visible: true
@@ -231,8 +229,8 @@ layers:
                     - $zoom: { min: 14 }
             draw:
                 polygons:
-                    style: university-stripes-gradient
-                    color: [0.000,0.000,0.000]
+                    style: parks-pixelate
+                    color: [0.073,0.125,0.170]
                     visible: true
 
     roads:
@@ -274,13 +272,13 @@ layers:
                 lines:
                     cap: round
                     join: round
-                    color: [0.290,0.290,0.290]
+                    color: [0.252,0.283,0.360]
                     width: 1px
             major_road:
                 filter: { kind: major_road }
                 draw:
                     lines:
-                        color: [0.290,0.290,0.290]
+                        color: [0.252,0.283,0.360]
                         width: 0.5px
             ferry:
                 filter: { kind: ferry }
@@ -292,17 +290,17 @@ layers:
             filter: { kind: highway, $zoom: { min: 8 } }
             draw:
                 lines:
-                    color: [[5,[0.290,0.290,0.290]], [12,[0.000,0.000,0.000]]]
+                    color: [[5,[0.252,0.283,0.360]], [12,[0.000,0.000,0.000]]]
                     width: [[5, 0px], [8, 0.1px], [12, 0.1px], [14, 2px], [16, 6.5px], [17, 22m]]
                     outline:
-                        color: [[5,[0.290,0.290,0.290]], [14,[0.290,0.290,0.290]]]
+                        color: [[5,[0.252,0.283,0.360]], [14,[0.252,0.283,0.360]]]
                         width: [[5, 0px], [12, 0.5px], [14, 1px], [16, 2px]]
 
             link:
                 filter: { is_link: true } # on- and off-ramps, etc
                 draw:
                     lines:
-                        color: [0.290,0.290,0.290]
+                        color: [0.252,0.283,0.360]
                         width: [[8, 0px], [13, 0px], [18, 2px]]
                         outline:
                             width: 0px
@@ -341,19 +339,19 @@ layers:
             # default style
             draw:
                 lines:
-                    color: [[13, [0.290,0.290,0.290]], [16, [0.000,0.000,0.000]]]
+                    color: [[13, [0.252,0.283,0.360]], [16, [0.000,0.000,0.000]]]
                     width: [[13, 0.25px], [16,0.1px], [18, 4px]]
                     outline:
-                        color: [0.290,0.290,0.290]
+                        color: [0.252,0.283,0.360]
                         width: [[13, 0px], [15, 0.1px], [17, 1px]]
             trunk_primary:
                 filter: { kind_detail: [trunk, primary] }
                 draw:
                     lines:
-                        color: [[13, [0.290,0.290,0.290]], [14, [0.000,0.000,0.000]]]
+                        color: [[13, [0.252,0.283,0.360]], [14, [0.000,0.000,0.000]]]
                         width: [[13, 0.25px], [14, 0.1px], [15, 2px], [17, 8px], [18, 10m]]
                         outline:
-                            color: [0.290,0.290,0.290]
+                            color: [0.252,0.283,0.360]
                             width: [[13, 0px], [16, 1px]]
                 early:
                     filter: { $zoom: { max: 16 } }
@@ -372,10 +370,10 @@ layers:
                     filter: { ref: true }
                     draw:
                         lines:
-                            color: [[11,[0.290,0.290,0.290]], [12, [0.000,0.000,0.000]]]
+                            color: [[11,[0.252,0.283,0.360]], [12, [0.000,0.000,0.000]]]
                             width: [[11, 0.25px], [12, 0.1px], [15, 1.25px], [16, 2px], [17, 8px], [18, 10m]]
                             outline:
-                                color: [0.290,0.290,0.290]
+                                color: [0.252,0.283,0.360]
                                 width: [[11, 0px], [14, 0.5px], [17, 1px]]
                     early:
                         filter: { $zoom: { max: 16 } }
@@ -395,10 +393,10 @@ layers:
                 filter: { is_link: true } # on- and off-ramps, etc
                 draw:
                     lines:
-                        color: [[11,[0.290,0.290,0.290]], [12, [0.000,0.000,0.000]]]
+                        color: [[11,[0.252,0.283,0.360]], [12, [0.000,0.000,0.000]]]
                         width: [[11, 0.25px], [12, 0.1px], [15, 1.25px], [18, 8px]]
                         outline:
-                            color: [0.290,0.290,0.290]
+                            color: [0.252,0.283,0.360]
                             width: [[11, 0px], [14, 0.5px], [17, 1px]]
             tunnel:
                 filter: { is_tunnel: true, $zoom: { min: 13 } }
@@ -411,7 +409,7 @@ layers:
                 filter: { kind_detail: secondary }
                 draw:
                     lines:
-                        color: [0.290,0.290,0.290]
+                        color: [0.252,0.283,0.360]
                         width: [[13,0px], [15,1px], [18,1.5px]]
                         outline:
                             width: 0px
@@ -426,7 +424,7 @@ layers:
                     filter: { ref: true, $zoom: { min: 12 } }
                     draw:
                         lines:
-                            color: [0.290,0.290,0.290]
+                            color: [0.252,0.283,0.360]
                     early:
                         filter: { $zoom: { max: 15 } }
                         draw:
@@ -445,7 +443,7 @@ layers:
                 filter: { kind_detail: [tertiary, tertiary_link] }
                 draw:
                     lines:
-                        color: [0.290,0.290,0.290]
+                        color: [0.252,0.283,0.360]
                         width: [[13,0px], [15,1px], [18,1.5px]]
                         outline:
                             width: 0px
@@ -460,7 +458,7 @@ layers:
                     filter: { ref: true, $zoom: { min: 12 } }
                     draw:
                         lines:
-                            color: [0.290,0.290,0.290]
+                            color: [0.252,0.283,0.360]
                     early:
                         filter: { $zoom: { max: 15 } }
                         draw:
@@ -477,7 +475,7 @@ layers:
                     filter: { is_link: true } # on- and off-ramps, etc
                     draw:
                         lines:
-                            color: [0.290,0.290,0.290]
+                            color: [0.252,0.283,0.360]
 
 
         # minor_road:
@@ -495,7 +493,7 @@ layers:
             polygons:
                 visible: false
                 order: 329
-                color: [0.190,0.190,0.200]
+                color: [0.158,0.176,0.220]
 
         footprints:
             filter:
@@ -511,23 +509,30 @@ layers:
             draw:
                 polygons:
                     visible: true
-                    # style: buildings-pixelate
-                    style: grid-gradient
+                    style: buildings-pixelate
+                    # style: grid-gradient
 
-            extrude:
-                filter:
-                    all:
-                        - $zoom: { min: 15 }
-                        - height: { min: 200 }
-                        - not:
-                            - layer: [-1, -2, -3, -4, -5]
-                draw:
-                    polygons:
-                        style: polygons-windows
-                        # style: polygons-glass-walls
-                        visible: true
-                        color: [0.500,0.500,0.500]
-                        extrude: global.building_extrude_height
+            # extrude:
+            #     filter:
+            #         all:
+            #             - $zoom: { min: 15 }
+            #             - height: { min: 200 }
+            #             - not:
+            #                 - layer: [-1, -2, -3, -4, -5]
+            #     draw:
+            #         polygons:
+            #             style: polygons-windows
+            #             # style: polygons-glass-walls
+            #             visible: true
+            #             color: [0.500,0.500,0.500]
+            #             extrude: global.building_extrude_height
+
+        in_university:
+            filter: { landuse_kind: [university,school] }
+            draw:
+                polygons:
+                    visible: true
+                    style: grid-gradient
 
     places:
         data: { source: mapzen, layer: places }

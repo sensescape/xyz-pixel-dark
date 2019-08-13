@@ -4,6 +4,8 @@
 
 View the [xyz pixel map](https://sensescape.github.io/xyz-pixel-dark/#12/37.7784/-122.4331).
 
+[https://explore.xyz.here.com](https://explore.xyz.here.com)
+
 ### To run locally:
 
 Download this repo, then start a web server in its directory:

@@ -715,9 +715,9 @@ layers:
                 lines:
                     color: global.white_color
                     width: [[14, 0px], [16, 0.15px], [17, 2.5px], [20, 3m]]
-                    outline:
-                        color: [[13, global.light_color], [15, global.extralight_color]]
-                        width: [[14, 0.25px], [16, 0.35px], [17, 1px]]
+                    # outline:
+                    #     color: [[13, global.light_color], [15, global.lightest_color]]
+                    #     width: [[14, 0.25px], [16, 0.35px], [17, 1px]]
             early:
                 filter:
                     $zoom: { max: 15 }
@@ -732,18 +732,18 @@ layers:
                     lines:
                         color: global.white_color
                         width: [[14, 0px], [16, 0.15px], [17, 2.5px], [20, 3m]]
-                        outline:
-                            color: [[13, global.light_color], [15, global.extralight_color]]
-                            width: [[14, 0.25px], [16, 0.35px], [17, 1px]]
+                        # outline:
+                        #     color: [[13, global.light_color], [15, global.lightest_color]]
+                        #     width: [[14, 0.25px], [16, 0.35px], [17, 1px]]
             footway:
                 filter: { kind_detail: footway }
                 draw:
                     lines:
                         color: global.white_color
                         width: [[14, 0px], [16, 0.15px], [17, 2.5px], [20, 3m]]
-                        outline:
-                            color: [[13, global.light_color], [15, global.mid_color]]
-                            width: [[14, 0.25px], [16, 0.35px], [17, 1px]]
+                        # outline:
+                        #     color: [[13, global.light_color], [15, global.lightest_color]]
+                        #     width: [[14, 0.25px], [16, 0.35px], [17, 1px]]
                 bridge:
                     filter: { is_bridge: true }
                     draw:
@@ -777,9 +777,9 @@ layers:
                 lines:
                     color: global.white_color
                     width: [[13, 0px], [16, 0.15px], [17, 2.5px], [20, 4m]]
-                    outline:
-                        color: [[13, global.light_color], [15, global.midlight_color]]
-                        width: [[13, 0.25px], [16, 0.5px], [17, 1px]]
+                    # outline:
+                    #     color: [[13, global.light_color], [15, global.lightest_color]]
+                    #     width: [[13, 0.25px], [16, 0.5px], [17, 1px]]
             bridge:
                 filter: { is_bridge: true }
                 draw:
@@ -812,11 +812,11 @@ layers:
                     dash: [0.75, 0.25]
                     dash_background_color: global.white_color
                     order: global.feature_order
-                    color: [[15, global.light_color], [19, global.lighter_color]]
+                    color: [[15, global.light_color], [19, global.lightest_color]]
                     width: [[15, 0.5px], [18, 3px], [19, 1.5m]]
-                    outline:
-                        color: global.offwhite_color
-                        width: [[15, 0px], [18, 1px]]
+                    # outline:
+                    #     color: global.offwhite_color
+                    #     width: [[15, 0px], [18, 1px]]
             # labels-steps:
             #     filter: { $zoom: { min: 17 } }
             #     draw:

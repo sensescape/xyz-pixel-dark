@@ -1276,9 +1276,9 @@ styles:
             uniforms:
                 u_colors:
                     - [0.003,0.058,0.080] # lower-left
-                    - [0.00,0.00,0.00] # lower-right
-                    - [0.022,0.079,0.130] # upper-left
-                    - [0.000,0.005,0.050] # upper-right
+                    - [0.000,0.000,0.000] # lower-right
+                    - [0.002,0.069,0.120] # upper-left
+                    - [0.047,0.047,0.059] # upper-right
             defines:
                 STRIPES_WIDTH: .65
                 STRIPES_ALPHA: 1.0

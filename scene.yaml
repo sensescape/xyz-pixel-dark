@@ -193,7 +193,7 @@ layers:
             draw:
                 polygons:
                     style: parks-pixelate
-                    color: [0.108,0.134,0.200]
+                    color: [0.048,0.074,0.110]
                     visible: true
             us_national_park:
                 # yosemite national park, death valley national park, grand canyon national park
@@ -203,8 +203,8 @@ layers:
                         - protect_class: ['2','3','5']
                 draw:
                     polygons:
-                        style: parks-pixelate
-                        color: [0.058,0.084,0.150]
+                        style: parks-pixelate2
+                        color: [0.060,0.079,0.120]
                         visible: true
 
         conservation:
@@ -214,8 +214,8 @@ layers:
                 not: { protect_class: ['2','3','5']}
             draw:
                 polygons:
-                    style: parks-pixelate
-                    color: [0.073,0.125,0.170]
+                    style: parks-pixelate2
+                    color: [0.070,0.107,0.140]
                     visible: true
 
         national_forest_level_6:
@@ -227,8 +227,8 @@ layers:
                     - operator: ['United States Forest Service']
             draw:
                 polygons:
-                    style: parks-pixelate
-                    color: [0.031,0.134,0.150]
+                    style: parks-pixelate2
+                    color: [0.047,0.093,0.120]
                     visible: true
         
         forest-landcover:
@@ -251,7 +251,7 @@ layers:
             draw:
                 polygons:
                     style: parks-pixelate
-                    color: [0.028,0.101,0.130]
+                    color: [0.043,0.079,0.100]
                     visible: true
             national_park:
                 #filter: function() { return feature.name && (feature.name.indexOf('National Park') > -1); }
@@ -268,8 +268,8 @@ layers:
                 kind: golf_course
             draw:
                 polygons:
-                    style: parks-pixelate
-                    color: [0.057,0.117,0.140]
+                    style: parks-pixelate2
+                    color: [0.006,0.059,0.080]
                     visible: true
 
         university:
@@ -280,7 +280,7 @@ layers:
             draw:
                 polygons:
                     style: parks-pixelate
-                    color: [0.073,0.125,0.170]
+                    color: [0.033,0.085,0.130]
                     visible: true
 
     roads:
@@ -710,7 +710,7 @@ layers:
                     - kind_detail: [steps, track, pier]
             draw:
                 lines:
-                    color: global.white_color
+                    color: [0.168,0.187,0.230]
                     width: [[14, 0px], [16, 0.15px], [17, 2.5px], [20, 3m]]
             early:
                 filter:
@@ -724,13 +724,13 @@ layers:
                 filter: { kind_detail: pedestrian }
                 draw:
                     lines:
-                        color: global.white_color
+                        color: [0.168,0.187,0.230]
                         width: [[14, 0px], [16, 0.15px], [17, 2.5px], [20, 3m]]
             footway:
                 filter: { kind_detail: footway }
                 draw:
                     lines:
-                        color: global.white_color
+                        color: [0.168,0.187,0.230]
                         width: [[14, 0px], [16, 0.15px], [17, 2.5px], [20, 3m]]
                 bridge:
                     filter: { is_bridge: true }
@@ -762,14 +762,14 @@ layers:
             filter: { kind: path, kind_detail: track }
             draw:
                 lines:
-                    color: global.white_color
+                    color: [0.168,0.187,0.230]
                     width: [[13, 0px], [16, 0.15px], [17, 2.5px], [20, 4m]]
             bridge:
                 filter: { is_bridge: true }
                 draw:
                     lines:
                         cap: butt
-                        color: global.white_color
+                        color: global.mid_color
                         outline:
                             color: [[13, global.light_color], [15, global.black_color]]
                             cap: butt
@@ -792,7 +792,7 @@ layers:
             draw:
                 lines:
                     dash: [0.75, 0.25]
-                    dash_background_color: global.white_color
+                    dash_background_color: [0.168,0.187,0.230]
                     order: global.feature_order
                     color: [[15, global.light_color], [19, global.lightest_color]]
                     width: [[15, 0.5px], [18, 3px], [19, 1.5m]]
@@ -1229,7 +1229,7 @@ styles:
         mix: [polygons-pixelate]
         shaders:
             defines:
-                PIXELATE_SCALE: 40.
+                PIXELATE_SCALE: 30.
                 PIXELATE_COLOR: color.rgb*.12
                 PIXELATE_BACKGROUND_COLOR: color.rgb
 
@@ -1239,7 +1239,7 @@ styles:
         shaders:
             defines:
                 PIXELATE_SCALE: 5.
-                PIXELATE_COLOR: color.rgb*.395
+                PIXELATE_COLOR: color.rgb*.652
                 PIXELATE_BACKGROUND_COLOR: color.rgb
 
     buildings-pixelate:
@@ -1256,8 +1256,17 @@ styles:
         mix: [polygons-pixelate]
         shaders:
             defines:
-                PIXELATE_SCALE: 40.
+                PIXELATE_SCALE: 30.
                 PIXELATE_COLOR: color.rgb*.17
+                PIXELATE_BACKGROUND_COLOR: color.rgb
+
+    parks-pixelate2:
+        base: polygons
+        mix: [polygons-pixelate]
+        shaders:
+            defines:
+                PIXELATE_SCALE: 30.
+                PIXELATE_COLOR: color.rgb*.12
                 PIXELATE_BACKGROUND_COLOR: color.rgb
 
     parks-stripes-2-gradients:
@@ -1266,10 +1275,10 @@ styles:
         shaders:
             uniforms:
                 u_colors:
-                    - [0.013,0.068,0.090] # lower-left
+                    - [0.003,0.058,0.080] # lower-left
                     - [0.00,0.00,0.00] # lower-right
-                    - [0.052,0.109,0.160] # upper-left
-                    - [0.000,0.015,0.060] # upper-right
+                    - [0.022,0.079,0.130] # upper-left
+                    - [0.000,0.005,0.050] # upper-right
             defines:
                 STRIPES_WIDTH: .65
                 STRIPES_ALPHA: 1.0
@@ -1282,7 +1291,7 @@ styles:
 
                     color.rgb = mix(mix(u_colors[0], u_colors[1], gl_FragCoord.x/u_resolution.x),
                                 mix(u_colors[2], u_colors[3], gl_FragCoord.x/u_resolution.x),
-                                stripes(st*40.,
+                                stripes(st*20.,
                                         STRIPES_WIDTH,
                                         STRIPES_ANGLE));
 

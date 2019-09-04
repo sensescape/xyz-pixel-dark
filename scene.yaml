@@ -1530,7 +1530,7 @@ styles:
         mix: [polygons-pixelate]
         shaders:
             defines:
-                PIXELATE_SCALE: 5.
+                PIXELATE_SCALE: 25.
                 PIXELATE_COLOR: color.rgb*.652
                 PIXELATE_BACKGROUND_COLOR: color.rgb
 
